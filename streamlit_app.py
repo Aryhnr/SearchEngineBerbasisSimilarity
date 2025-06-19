@@ -2,9 +2,11 @@ import streamlit as st
 import pickle
 import math
 import json
-from PIL import Image
+import time
 import requests
 from streamlit_option_menu import option_menu
+from PIL import Image
+
 
 # --- Load metadata dan data mentah ---
 with open('data/meta.pkl', 'rb') as f:
@@ -125,6 +127,8 @@ with center[1]:
 # 3. HASIL PENCARIAN
 # 3. HASIL PENCARIAN
 if search and query.strip():
+    start_time = time.time()
+
     if selected == "Cosine Similarity":
         results, meta = cosine_search(query)
     elif selected == "BM25":
@@ -132,10 +136,13 @@ if search and query.strip():
     else:
         results, meta = bm25plus_search(query)
 
+    end_time = time.time()
+    elapsed_time = round(end_time - start_time, 4)  # waktu dalam detik
+
     center = st.columns([1, 4, 1])
-    with center[1]:  # hasil juga ditaruh di tengah
+    with center[1]:
         if results:
-            st.success(f"Ditemukan {len(results)} hasil relevan:")
+            st.success(f"Ditemukan {len(results)} hasil relevan dalam {elapsed_time} detik:")
             for idx, score in results:
                 item = meta[idx]
                 berita = raw_data[idx]
@@ -154,4 +161,3 @@ if search and query.strip():
                     st.markdown("---")
         else:
             st.warning("Tidak ditemukan hasil relevan.")
-
