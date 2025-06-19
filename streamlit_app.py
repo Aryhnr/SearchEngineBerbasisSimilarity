@@ -36,7 +36,7 @@ def cosine_search(query):
     results = [(i, cosine_similarity(q_tfidf, v)) for i, v in enumerate(vectors)]
     results = [(i, s) for i, s in results if s > 0]
     results.sort(key=lambda x: x[1], reverse=True)
-    return results[:20], metadata_cosine
+    return results[:10], metadata_cosine
 
 # --- FUNGSI BM25 ---
 def bm25_score(qt, tf_doc, df, N, dl, avgdl, k1=1.5, b=0.75):
@@ -64,7 +64,7 @@ def bm25_search(query):
                for i, tf in enumerate(doc_term_freq)]
     results = [(i, s) for i, s in results if s > 0]
     results.sort(key=lambda x: x[1], reverse=True)
-    return results[:20], metadata_bm25
+    return results[:10], metadata_bm25
 
 # --- FUNGSI BM25+ ---
 def bm25plus_score(qt, tf_doc, df, N, dl, avgdl, k1=1.5, b=0.75, delta=1.0):
@@ -92,7 +92,7 @@ def bm25plus_search(query):
                for i, tf in enumerate(doc_term_freq)]
     results = [(i, s) for i, s in results if s > 0]
     results.sort(key=lambda x: x[1], reverse=True)
-    return results[:20], metadata_bm25plus
+    return results[:10], metadata_bm25plus
 
 # --- UI ---
 st.set_page_config(page_title="Search Engine Berita", layout="wide")
